@@ -10,21 +10,23 @@ import {
   type CommandsRegistry,
   handleFollow,
   handleFollowing,
+  registerCommand,
 } from "./commands.js";
 import { argv, exit } from "node:process";
 
 async function main() {
-  let registry: CommandsRegistry = {
-    login: handlerLogin,
-    register: handlerRegister,
-    reset: handleReset,
-    users: handleUsers,
-    agg: handleAgg,
-    addfeed: handleAddFeed,
-    feeds: handleFeeds,
-    follow: handleFollow,
-    following: handleFollowing,
-  };
+  let registry: CommandsRegistry = {};
+
+  registerCommand(registry, "login", handlerLogin);
+  registerCommand(registry, "register", handlerRegister);
+  registerCommand(registry, "reset", handleReset);
+  registerCommand(registry, "users", handleUsers);
+  registerCommand(registry, "agg", handleAgg);
+  registerCommand(registry, "addfeed", handleAddFeed);
+  registerCommand(registry, "feeds", handleFeeds);
+  registerCommand(registry, "follow", handleFollow);
+  registerCommand(registry, "following", handleFollowing);
+
   const commandsArgument = argv.slice(2);
   if (!commandsArgument.length) {
     console.error("A command and arguments are expected");
