@@ -15,6 +15,20 @@
       "when": 1758205900833,
       "tag": "0001_sweet_gabe_jones",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1758212129435,
+      "tag": "0002_soft_demogoblin",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1758212611633,
+      "tag": "0003_crazy_screwball",
+      "breakpoints": true
     }
   ]
 }

@@ -9,7 +9,7 @@ export async function createFeed(name: string, url: string) {
   const userId = (await getUserByName(currentUser)).id;
   const [result] = await db
     .insert(feeds)
-    .values({ name: name, url: url, user_id: userId })
+    .values({ name: name, url: url, userId: userId })
     .returning();
   return result;
 }
@@ -18,7 +18,7 @@ export async function getFeeds() {
   const result = await db
     .select({ url: feeds.url, name: feeds.name, userName: users.name })
     .from(feeds)
-    .leftJoin(users, eq(feeds.user_id, users.id));
+    .leftJoin(users, eq(feeds.userId, users.id));
   return result;
 }
 

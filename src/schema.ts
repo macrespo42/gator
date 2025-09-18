@@ -1,14 +1,7 @@
-import { relations } from "drizzle-orm";
-import {
-  pgTable,
-  timestamp,
-  uuid,
-  text,
-  foreignKey,
-} from "drizzle-orm/pg-core";
+import { pgTable, timestamp, uuid, text, unique } from "drizzle-orm/pg-core";
 
 export const users = pgTable("users", {
-  id: uuid().primaryKey().defaultRandom().notNull(),
+  id: uuid("id").primaryKey().defaultRandom().notNull(),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at")
     .notNull()
@@ -17,33 +10,34 @@ export const users = pgTable("users", {
   name: text("name").notNull().unique(),
 });
 
-export const feeds = pgTable(
-  "feeds",
+export const feeds = pgTable("feeds", {
+  id: uuid("id").primaryKey().defaultRandom().notNull(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at")
+    .notNull()
+    .defaultNow()
+    .$onUpdate(() => new Date()),
+  name: text("name").notNull(),
+  url: text("url").notNull().unique(),
+  userId: uuid("user_id")
+    .references(() => users.id, { onDelete: "cascade" })
+    .notNull(),
+});
+
+export const feedFollows = pgTable(
+  "feed_follows",
   {
-    id: uuid().primaryKey().defaultRandom().notNull(),
+    id: uuid("id").primaryKey().defaultRandom().notNull(),
     createdAt: timestamp("created_at").notNull().defaultNow(),
     updatedAt: timestamp("updated_at")
       .notNull()
       .defaultNow()
       .$onUpdate(() => new Date()),
-    name: text("name").notNull(),
-    url: text("url").notNull().unique(),
-    user_id: uuid("user_id").notNull(),
+    userId: uuid("user_id").references(() => users.id, { onDelete: "cascade" }),
+    feedId: uuid("feed_id").references(() => feeds.id, { onDelete: "cascade" }),
   },
-  (table) => ({
-    userFk: foreignKey({
-      columns: [table.user_id],
-      foreignColumns: [users.id],
-    }).onDelete("cascade"),
-  }),
+  (f) => ({ feedFollowsUniqConstraint: unique().on(f.userId, f.feedId) }),
 );
-
-export const feedsRelations = relations(feeds, ({ one }) => ({
-  user: one(users, {
-    fields: [feeds.user_id],
-    references: [users.id],
-  }),
-}));
 
 export type Feed = typeof feeds.$inferSelect;
 export type User = typeof users.$inferInsert;
