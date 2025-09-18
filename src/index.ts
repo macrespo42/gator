@@ -1,9 +1,15 @@
-import { handlerLogin, runCommand, type CommandsRegistry } from "./commands.js";
+import {
+  handlerLogin,
+  handlerRegister,
+  runCommand,
+  type CommandsRegistry,
+} from "./commands.js";
 import { argv, exit } from "node:process";
 
-function main() {
+async function main() {
   let registry: CommandsRegistry = {
     login: handlerLogin,
+    register: handlerRegister,
   };
   const commandsArgument = argv.slice(2);
   if (!commandsArgument.length) {
@@ -12,7 +18,8 @@ function main() {
   }
   const commandName = commandsArgument.shift() ?? "";
   try {
-    runCommand(registry, commandName, ...commandsArgument);
+    await runCommand(registry, commandName, ...commandsArgument);
+    exit(0);
   } catch (err: any) {
     const msg = err?.message ?? "Unknown error";
     console.error(`Error: ${msg}`);
@@ -20,4 +27,4 @@ function main() {
   }
 }
 
-main();
+await main();
