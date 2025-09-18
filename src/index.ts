@@ -2,6 +2,7 @@ import {
   handleReset,
   handlerLogin,
   handlerRegister,
+  handleUsers,
   runCommand,
   type CommandsRegistry,
 } from "./commands.js";
@@ -12,6 +13,7 @@ async function main() {
     login: handlerLogin,
     register: handlerRegister,
     reset: handleReset,
+    users: handleUsers,
   };
   const commandsArgument = argv.slice(2);
   if (!commandsArgument.length) {
