@@ -2,30 +2,31 @@ import {
   handleAddFeed,
   handleAgg,
   handleReset,
-  handlerLogin,
+  handleLogin,
   handleFeeds,
-  handlerRegister,
+  handleRegister,
   handleUsers,
   runCommand,
   type CommandsRegistry,
   handleFollow,
   handleFollowing,
   registerCommand,
+  isLoggedIn,
 } from "./commands.js";
 import { argv, exit } from "node:process";
 
 async function main() {
   let registry: CommandsRegistry = {};
 
-  registerCommand(registry, "login", handlerLogin);
-  registerCommand(registry, "register", handlerRegister);
+  registerCommand(registry, "login", handleLogin);
+  registerCommand(registry, "register", handleRegister);
   registerCommand(registry, "reset", handleReset);
   registerCommand(registry, "users", handleUsers);
   registerCommand(registry, "agg", handleAgg);
-  registerCommand(registry, "addfeed", handleAddFeed);
+  registerCommand(registry, "addfeed", isLoggedIn(handleAddFeed));
   registerCommand(registry, "feeds", handleFeeds);
-  registerCommand(registry, "follow", handleFollow);
-  registerCommand(registry, "following", handleFollowing);
+  registerCommand(registry, "follow", isLoggedIn(handleFollow));
+  registerCommand(registry, "following", isLoggedIn(handleFollowing));
 
   const commandsArgument = argv.slice(2);
   if (!commandsArgument.length) {

@@ -13,9 +13,20 @@ import {
 import { fetchFeed } from "./rss";
 
 type CommandHandler = (cmdName: string, ...args: string[]) => Promise<void>;
+
+type UserCommandHandler = (cmdName: string, ...args: string[]) => Promise<void>;
 export type CommandsRegistry = Record<string, CommandHandler>;
 
-export async function handlerLogin(_: string, ...args: string[]) {
+export function isLoggedIn(handler: UserCommandHandler): CommandHandler {
+  const userName = readConfig().currentUserName;
+  if (!userName) {
+    throw new Error(`User ${userName} not found`);
+  }
+
+  return handler;
+}
+
+export async function handleLogin(_: string, ...args: string[]) {
   if (!args.length) {
     throw new Error("A user is expected as argument");
   }
@@ -27,7 +38,7 @@ export async function handlerLogin(_: string, ...args: string[]) {
   console.log(`User ${args[0]} has been set`);
 }
 
-export async function handlerRegister(_: string, ...args: string[]) {
+export async function handleRegister(_: string, ...args: string[]) {
   if (!args.length) {
     throw new Error("A user is expected as argument");
   }
