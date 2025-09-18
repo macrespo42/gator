@@ -1,4 +1,5 @@
 import {
+  handleReset,
   handlerLogin,
   handlerRegister,
   runCommand,
@@ -10,6 +11,7 @@ async function main() {
   let registry: CommandsRegistry = {
     login: handlerLogin,
     register: handlerRegister,
+    reset: handleReset,
   };
   const commandsArgument = argv.slice(2);
   if (!commandsArgument.length) {

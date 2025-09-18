@@ -1,5 +1,9 @@
 import { setUser } from "./config";
-import { createUser, getUserByName } from "./lib/db/queries/users";
+import {
+  createUser,
+  getUserByName,
+  deleteAllUsers,
+} from "./lib/db/queries/users";
 
 type CommandHandler = (cmdName: string, ...args: string[]) => Promise<void>;
 export type CommandsRegistry = Record<string, CommandHandler>;
@@ -27,6 +31,11 @@ export async function handlerRegister(_: string, ...args: string[]) {
   await createUser(args[0]);
   setUser(args[0]);
   console.log(`User ${args[0]} has successfully been created`);
+}
+
+export async function handleReset(_: string) {
+  await deleteAllUsers();
+  console.log("All users successfully deleted");
 }
 
 export async function registerCommand(
