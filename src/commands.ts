@@ -1,4 +1,8 @@
 import { readConfig, setUser } from "./config";
+import {
+  createFeedFollows,
+  getFeedFollowsForUser,
+} from "./lib/db/queries/feedFollows";
 import { createFeed, getFeeds, printFeed } from "./lib/db/queries/feeds";
 import {
   createUser,
@@ -73,6 +77,7 @@ export async function handleAddFeed(_: string, ...args: string[]) {
   const [name, url] = args;
   const feed = await createFeed(name, url);
   const currentUser = await getUserByName(readConfig().currentUserName);
+  await createFeedFollows(currentUser.name, url);
   printFeed(feed, currentUser);
 }
 
@@ -83,6 +88,28 @@ export async function handleFeeds(_: string) {
     console.log(`Name: ${curr.name}`);
     console.log(`Url: ${curr.url}`);
     console.log(`User: ${curr.userName}`);
+  }
+}
+
+export async function handleFollow(_: string, ...args: string[]) {
+  if (!args.length) {
+    throw new Error("A feed URL is expected as argument");
+  }
+  const [url] = args;
+  const currentUser = readConfig().currentUserName;
+  console.log(`DEBUG: url = ${url} and username = ${currentUser}`);
+  const follow = await createFeedFollows(currentUser, url);
+  if (!follow) {
+    throw new Error("The feed you try to follow does not exist");
+  }
+  console.log(`Following: ${follow.feedName}, created by ${follow.userName}`);
+}
+
+export async function handleFollowing(_: string) {
+  const currentUser = readConfig().currentUserName;
+  const feeds = await getFeedFollowsForUser(currentUser);
+  for (const feed of feeds) {
+    console.log(`- ${feed.feedName}`);
   }
 }
 

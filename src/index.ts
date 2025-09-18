@@ -8,6 +8,8 @@ import {
   handleUsers,
   runCommand,
   type CommandsRegistry,
+  handleFollow,
+  handleFollowing,
 } from "./commands.js";
 import { argv, exit } from "node:process";
 
@@ -20,6 +22,8 @@ async function main() {
     agg: handleAgg,
     addfeed: handleAddFeed,
     feeds: handleFeeds,
+    follow: handleFollow,
+    following: handleFollowing,
   };
   const commandsArgument = argv.slice(2);
   if (!commandsArgument.length) {
