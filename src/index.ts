@@ -12,6 +12,7 @@ import {
   handleFollowing,
   registerCommand,
   isLoggedIn,
+  handleUnfollow,
 } from "./commands.js";
 import { argv, exit } from "node:process";
 
@@ -27,6 +28,7 @@ async function main() {
   registerCommand(registry, "feeds", handleFeeds);
   registerCommand(registry, "follow", isLoggedIn(handleFollow));
   registerCommand(registry, "following", isLoggedIn(handleFollowing));
+  registerCommand(registry, "unfollow", isLoggedIn(handleUnfollow));
 
   const commandsArgument = argv.slice(2);
   if (!commandsArgument.length) {

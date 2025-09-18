@@ -1,6 +1,6 @@
 import { db } from "..";
 import { feedFollows, users, feeds } from "../../../schema";
-import { eq } from "drizzle-orm";
+import { eq, and } from "drizzle-orm";
 
 export async function createFeedFollows(userName: string, feedUrl: string) {
   const [user] = await db
@@ -13,15 +13,10 @@ export async function createFeedFollows(userName: string, feedUrl: string) {
     .from(feeds)
     .where(eq(feeds.url, feedUrl));
 
-  console.log(`DEBUG: USER: ${JSON.stringify(user)}`);
-  console.log(`DEBUG: FEED: ${JSON.stringify(feed)}`);
-
   const [newFeedFollow] = await db
     .insert(feedFollows)
     .values({ userId: user.id, feedId: feed.id })
     .returning();
-
-  console.log(`DEBUG: newFeedFollow: ${JSON.stringify(newFeedFollow)}`);
 
   const [result] = await db
     .select({
@@ -37,7 +32,6 @@ export async function createFeedFollows(userName: string, feedUrl: string) {
     .innerJoin(users, eq(feedFollows.userId, users.id))
     .where(eq(feedFollows.id, newFeedFollow.id));
 
-  console.log(`DEBUG: result: ${JSON.stringify(result)}`);
   return result;
 }
 
@@ -55,4 +49,11 @@ export async function getFeedFollowsForUser(userName: string) {
     .innerJoin(feeds, eq(feeds.id, feedFollows.feedId))
     .where(eq(users.name, userName));
   return results;
+}
+
+export async function deleteFeedFollows(userId: string, feedId: string) {
+  const [result] = await db
+    .delete(feedFollows)
+    .where(and(eq(feedFollows.userId, userId), eq(feedFollows.feedId, feedId)));
+  return result;
 }
