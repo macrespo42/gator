@@ -1,19 +1,21 @@
 import {
-  handleAddFeed,
-  handleAgg,
-  handleReset,
-  handleLogin,
-  handleFeeds,
-  handleRegister,
-  handleUsers,
   runCommand,
   type CommandsRegistry,
-  handleFollow,
-  handleFollowing,
   registerCommand,
   isLoggedIn,
-  handleUnfollow,
 } from "./commands.js";
+
+import {
+  handleRegister,
+  handleReset,
+  handleLogin,
+  handleUsers,
+} from "./auth.js";
+
+import { handleAddFeed, handleFeeds } from "./feeds.js";
+import { handleFollow, handleFollowing, handleUnfollow } from "./follow.js";
+import { handleAgg } from "./aggregate.js";
+
 import { argv, exit } from "node:process";
 
 async function main() {
