@@ -1,4 +1,6 @@
 import {
+  handleAddFeed,
+  handleAgg,
   handleReset,
   handlerLogin,
   handlerRegister,
@@ -14,6 +16,8 @@ async function main() {
     register: handlerRegister,
     reset: handleReset,
     users: handleUsers,
+    agg: handleAgg,
+    addfeed: handleAddFeed,
   };
   const commandsArgument = argv.slice(2);
   if (!commandsArgument.length) {

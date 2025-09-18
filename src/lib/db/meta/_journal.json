@@ -8,6 +8,13 @@
       "when": 1758120964500,
       "tag": "0000_wakeful_cloak",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1758205900833,
+      "tag": "0001_sweet_gabe_jones",
+      "breakpoints": true
     }
   ]
 }
