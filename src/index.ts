@@ -3,6 +3,7 @@ import {
   handleAgg,
   handleReset,
   handlerLogin,
+  handleFeeds,
   handlerRegister,
   handleUsers,
   runCommand,
@@ -18,6 +19,7 @@ async function main() {
     users: handleUsers,
     agg: handleAgg,
     addfeed: handleAddFeed,
+    feeds: handleFeeds,
   };
   const commandsArgument = argv.slice(2);
   if (!commandsArgument.length) {
