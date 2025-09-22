@@ -1,5 +1,6 @@
 import { fetchFeed } from "./rss";
 import { getNextFeedToFetch, markFeedFetched } from "./lib/db/queries/feeds";
+import { createPost } from "./lib/db/queries/posts";
 
 async function scrapeFeed() {
   const nextFeed = await getNextFeedToFetch();
@@ -7,14 +8,18 @@ async function scrapeFeed() {
   const url = nextFeed["url"] as string;
   await markFeedFetched(id);
   const feed = await fetchFeed(url);
+
   const channel = feed?.channel;
-  console.log(`Title: ${channel?.title}`);
-  console.log(`Link: ${channel?.link}`);
-  console.log(`Description: ${channel?.description}`);
+
   if (channel?.item.length) {
     for (let i = 0; i < channel?.item.length; i++) {
-      console.log(
-        `- title: '${channel.item[i].title}' - Description: '${channel.item[i].description}'`,
+      const curr = channel.item[i];
+      await createPost(
+        curr.title,
+        curr.link,
+        curr.description,
+        id,
+        new Date(curr.pubDate),
       );
     }
   }
