@@ -29,6 +29,34 @@
       "when": 1758212611633,
       "tag": "0003_crazy_screwball",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1758539629201,
+      "tag": "0004_futuristic_deathstrike",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1758540606779,
+      "tag": "0005_uneven_payback",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1758540760327,
+      "tag": "0006_little_madripoor",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1758540852759,
+      "tag": "0007_amazing_argent",
+      "breakpoints": true
     }
   ]
 }

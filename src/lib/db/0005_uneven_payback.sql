@@ -1,0 +1,1 @@
+ALTER TABLE "feed_follows" ALTER COLUMN "last_fetched_at" SET DEFAULT now();
