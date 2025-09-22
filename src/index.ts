@@ -17,6 +17,7 @@ import { handleFollow, handleFollowing, handleUnfollow } from "./follow.js";
 import { handleAgg } from "./aggregate.js";
 
 import { argv, exit } from "node:process";
+import { handleBrowse } from "./browse.js";
 
 async function main() {
   let registry: CommandsRegistry = {};
@@ -31,6 +32,7 @@ async function main() {
   registerCommand(registry, "follow", isLoggedIn(handleFollow));
   registerCommand(registry, "following", isLoggedIn(handleFollowing));
   registerCommand(registry, "unfollow", isLoggedIn(handleUnfollow));
+  registerCommand(registry, "browse", isLoggedIn(handleBrowse));
 
   const commandsArgument = argv.slice(2);
   if (!commandsArgument.length) {
